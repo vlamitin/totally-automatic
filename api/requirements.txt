@@ -1,0 +1,16 @@
+bcrypt==3.1.7
+cffi==1.13.2
+Click==7.0
+fastapi==0.44.1
+h11==0.8.1
+httptools==0.0.13
+passlib==1.7.2
+pycparser==2.19
+pydantic==1.2
+PyJWT==1.7.1
+python-multipart==0.0.5
+six==1.13.0
+starlette==0.12.9
+uvicorn==0.10.8
+uvloop==0.14.0
+websockets==8.1
