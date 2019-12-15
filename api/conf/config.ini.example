@@ -1,0 +1,5 @@
+[AUTH]
+secret_key = f31e2f1d446d107bb6b33902d87f87e1e6aa9c92669099acc43549996f3276cb # openssl rand -hex 32
+algorithm = HS256
+token_expire_minutes = 30
+

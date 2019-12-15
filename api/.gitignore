@@ -1,0 +1,21 @@
+__pycache__
+
+# env
+env/
+
+# ide
+.idea/
+*.iml
+
+# logs
+*.log
+
+# notebook jupyter
+*.ipynb
+.ipynb_checkpoints
+
+# sensible data
+*.token.pickle
+*_db.json
+*config.ini
+*credentials.json
