@@ -25,6 +25,8 @@ oauth2_scheme = OAuth2PasswordBearer(
     tokenUrl="/login",
     scopes={
         "users": "Read info about any user",
+        "transactions:read": "Read transactions",
+        "transactions:write": "Write transactions",
         "me": "Read information about the current user.",
         "items": "Read items."
     },
