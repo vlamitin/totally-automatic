@@ -1,0 +1,17 @@
+.nav {
+    display: flex;
+    justify-content: space-between;
+    padding: 8px 16px;
+}
+
+.nav li + li {
+    padding-left: 24px;
+}
+
+.second-last-item {
+    flex: 1;
+}
+
+.nav__login {
+    /*flex-shrink: 1;*/
+}

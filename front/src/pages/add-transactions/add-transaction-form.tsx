@@ -66,10 +66,12 @@ export const AddTransactionForm: React.FC<AddTransactionFormProps> = props => {
                     id="tr-sum"
                     type="text"
                     value={form.sum}
-                    onChange={e => changeForm({
-                        ...form,
-                        sum: Number(e.target.value)
-                    })}
+                    onChange={e => {
+                        changeForm({
+                            ...form,
+                            sum: Number(e.target.value)
+                        })
+                    }}
                 />
                 <label htmlFor="tr-sum">Сумма</label>
             </div>
@@ -89,10 +91,13 @@ export const AddTransactionForm: React.FC<AddTransactionFormProps> = props => {
                     id="tr-comment"
                     type="text"
                     value={form.comment}
-                    onChange={e => changeForm({
-                        ...form,
-                        comment: e.target.value
-                    })}
+                    onChange={e => {
+                        console.log(e.target.value)
+                        changeForm({
+                            ...form,
+                            comment: e.target.value
+                        })
+                    }}
                 />
                 <label htmlFor="tr-comment">Комментарий</label>
             </div>

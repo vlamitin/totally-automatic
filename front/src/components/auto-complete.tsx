@@ -1,6 +1,6 @@
 import React from 'react'
 import Autosuggest from 'react-autosuggest'
-import { CATEGORIES } from '../pages/add-transaction/add-transaction-form'
+import { CATEGORIES } from '../pages/add-transactions/add-transaction-form'
 
 import './auto-complete.css'
 

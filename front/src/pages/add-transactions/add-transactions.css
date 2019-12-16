@@ -1,0 +1,4 @@
+.add-transactions {
+    display: flex;
+    justify-content: space-between;
+}
