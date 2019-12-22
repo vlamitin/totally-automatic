@@ -14,6 +14,7 @@ async def get_transactions(token_data: TokenData = Depends(authorize_user)):
 
 
 async def put_transactions(new_transactions: List[Transaction], token_data: TokenData = Depends(authorize_user)):
+    append_transactions(new_transactions, token_data.username)
     return new_transactions
 
 
@@ -26,5 +27,4 @@ async def read_transactions(transactions: List[Transaction] = Security(get_trans
 async def create_new_transactions(
         transactions: List[Transaction] = Security(put_transactions, scopes=["transactions:write"])
 ):
-    append_transactions(transactions)
     return transactions

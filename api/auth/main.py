@@ -67,6 +67,7 @@ async def authorize_user(
                 detail="Not enough permissions",
                 headers={"WWW-Authenticate": authenticate_value},
             )
+    return token_data
 
 
 def authenticate_user(username: str, password: str):

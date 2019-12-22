@@ -5,7 +5,7 @@ from typing import List
 
 
 # @param tr example {'date': '22.12.2019', 'sum': 200, category: 'Еда работа', 'comment': 'sic!'}
-def transaction_to_values(tr):
+def transaction_to_values(tr, username: str):
     return [
         {
             'userEnteredValue': {
@@ -32,11 +32,16 @@ def transaction_to_values(tr):
             'userEnteredValue': {
                 'stringValue': tr['comment']
             }
+        },
+        {
+            'userEnteredValue': {
+                'stringValue': username
+            }
         }
     ]
 
 
-def append_transactions(transactions: List[Transaction]):
+def append_transactions(transactions: List[Transaction], username: str):
     ssc = ss_connector.SSConnector(
         'spreadsheets_connector/google_sheets_credentials.json',
         'spreadsheets_connector/token.pickle',
@@ -45,7 +50,7 @@ def append_transactions(transactions: List[Transaction]):
     ssc.append_rows_to_sheets([
         {
             'sheet_id': config['SS']['raw_expences_sheet_id'],
-            'rows': [transaction_to_values(dict(tr)) for tr in transactions]
+            'rows': [transaction_to_values(dict(tr), username) for tr in transactions]
         }
     ])
 
