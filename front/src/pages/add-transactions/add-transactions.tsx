@@ -34,7 +34,10 @@ export const AddTransactions: React.FC = () => {
                 />
 
                 <div style={{ marginTop: 16 }}>
-                    <button onClick={() => sendTransactions(transactions, loginStore.token)}>
+                    <button onClick={async () => {
+                        await sendTransactions(transactions, loginStore.token)
+                        changeTransactions([])
+                    }}>
                         send to spreadsheets (TODO)
                     </button>
                 </div>

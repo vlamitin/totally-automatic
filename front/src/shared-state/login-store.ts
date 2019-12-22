@@ -30,7 +30,9 @@ export class LoginStore {
 
         const jsoned = await response.json()
 
-        this.setUsername(jsoned.username)
+        if (jsoned.username) {
+            this.setUsername(jsoned.username)
+        }
     }
 
     @computed
