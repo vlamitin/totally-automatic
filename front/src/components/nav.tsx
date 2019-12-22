@@ -19,10 +19,15 @@ export const Nav: React.FC<{}> = observer(() => {
                 })}>
                     <Link to={Routes.ROOT}>Home</Link>
                 </li>
-                <li className={classNames('second-last-item', {
+                <li className={classNames({
                     'active': pathname === Routes.ADD_TRANSACTIONS
                 })}>
                     <Link to={Routes.ADD_TRANSACTIONS}>Add-transactions</Link>
+                </li>
+                <li className={classNames('second-last-item', {
+                    'active': pathname === Routes.PROCESS_TRANSACTIONS
+                })}>
+                    <Link to={Routes.PROCESS_TRANSACTIONS}>Process-transactions</Link>
                 </li>
                 <li className={classNames({
                     'active': pathname === Routes.LOGIN

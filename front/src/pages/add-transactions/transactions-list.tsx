@@ -1,14 +1,14 @@
 import React from 'react'
-import { Transaction } from './add-transaction-form'
 
 import './added-transactions-list.css'
+import { Transaction } from '../../shared-state/transactions-store'
 
-interface AddedTransactionsListProps {
+interface TransactionsListProps {
     transactions: Transaction[]
     onRowDelete: (index: number) => void
 }
 
-export const AddedTransactionsList: React.FC<AddedTransactionsListProps> = props => {
+export const TransactionsList: React.FC<TransactionsListProps> = props => {
 
     return (
         <table className="tr-list">

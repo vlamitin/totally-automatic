@@ -9,6 +9,7 @@ import { Nav } from './components/nav'
 
 import './app.css'
 import { Routes } from './routes'
+import { ProcessTransactions } from './pages/process-transactions/process-transactions'
 
 document.title = window.location.host
 
@@ -29,6 +30,11 @@ export const App: React.FC = () => {
                     <PrivateRoute path={Routes.ADD_TRANSACTIONS}>
                         <Page>
                             <AddTransactions />
+                        </Page>
+                    </PrivateRoute>
+                    <PrivateRoute path={Routes.PROCESS_TRANSACTIONS}>
+                        <Page>
+                            <ProcessTransactions />
                         </Page>
                     </PrivateRoute>
                 </Switch>

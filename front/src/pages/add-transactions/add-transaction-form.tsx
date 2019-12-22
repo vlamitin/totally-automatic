@@ -1,6 +1,7 @@
 import React from 'react'
 import { DayPicker } from '../../components/day-picker'
 import { AutoComplete } from '../../components/auto-complete'
+import { Transaction } from '../../shared-state/transactions-store'
 
 export const CATEGORIES = [
     'Еда работа',
@@ -26,13 +27,6 @@ export const CATEGORIES = [
     'Отпуск',
 ]
 
-export interface Transaction {
-    date: Date
-    sum: number
-    category: string
-    comment?: string
-}
-
 export interface AddTransactionFormProps {
     defaultState: Transaction
     onStateChange: (newState: Transaction) => void
@@ -55,6 +49,7 @@ export const AddTransactionForm: React.FC<AddTransactionFormProps> = props => {
         >
             <div style={{ marginBottom: 16 }}>
                 <DayPicker
+                    defaultDate={form.date}
                     onDateChange={newDate => changeForm({
                         ...form,
                         date: newDate

@@ -1,11 +1,24 @@
 import React from 'react'
-import { AddTransactionForm, Transaction } from './add-transaction-form'
-import { AddedTransactionsList } from './added-transactions-list'
+import { AddTransactionForm } from './add-transaction-form'
+import { TransactionsList } from './transactions-list'
 
 import './add-transactions.css'
 import { useStores } from '../../shared-state/contexts'
+import { Transaction } from '../../shared-state/transactions-store'
 
-export const AddTransactions: React.FC = () => {
+export interface AddTransactionsProps {
+    transaction?: Transaction
+    onTransactionAdded?: () => void
+}
+
+const defaultTransaction: Transaction = {
+    date: undefined,
+    sum: 0,
+    category: '',
+    comment: ''
+}
+
+export const AddTransactions: React.FC<AddTransactionsProps> = ({ transaction, onTransactionAdded }) => {
     const [transactions, changeTransactions] = React.useState([])
     const { loginStore } = useStores()
 
@@ -15,18 +28,16 @@ export const AddTransactions: React.FC = () => {
         <div className="add-transactions">
             <AddTransactionForm
                 key={transactions.length}
-                defaultState={{
-                    date: undefined,
-                    sum: 0,
-                    category: '',
-                    comment: ''
-                }}
+                defaultState={transaction || defaultTransaction}
                 onStateChange={newTr => {
                     changeTransactions([...transactions, newTr])
+                    if (onTransactionAdded) {
+                        onTransactionAdded()
+                    }
                 }}
             />
             <div>
-                <AddedTransactionsList
+                <TransactionsList
                     transactions={transactions}
                     onRowDelete={index => {
                         changeTransactions(transactions.filter((tr, ind) => ind !== index))

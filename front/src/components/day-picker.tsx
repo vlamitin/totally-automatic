@@ -12,16 +12,17 @@ moment.locale('ru')
 const utils = require('react-day-picker/utils')
 
 export interface DayPickerProps extends Omit<DayPickerInputProps, 'onDayChange'> {
+    defaultDate: Date
     onDateChange: (newDate: Date) => void
 }
 
 export class DayPicker extends React.Component<DayPickerProps, { date: Date }> {
 
     state = {
-        date: undefined
+        date: this.props.defaultDate
     }
 
-    currentDay = undefined
+    currentDay = this.props.defaultDate
 
     render() {
         return (
