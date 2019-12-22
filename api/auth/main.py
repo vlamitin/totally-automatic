@@ -36,7 +36,6 @@ oauth2_scheme = OAuth2PasswordBearer(
 async def authorize_user(
         security_scopes: SecurityScopes, token: str = Depends(oauth2_scheme)
 ):
-    print('security_scopes', security_scopes.scope_str)
     if security_scopes.scopes:
         authenticate_value = f'Bearer scope="{security_scopes.scope_str}"'
     else:

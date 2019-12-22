@@ -4,6 +4,7 @@ from fastapi import Depends, Security, APIRouter
 
 from auth.main import TokenData, authorize_user
 from models.transaction import Transaction
+from spreadsheets_connector.transactions_ss_connector import append_transactions
 
 router = APIRouter()
 
@@ -21,8 +22,9 @@ async def read_transactions(transactions: List[Transaction] = Security(get_trans
     return transactions
 
 
-@router.put("/transactions/", response_model=Transaction)
-async def create_new_transaction(
-        created_transactions: List[Transaction] = Security(put_transactions, scopes=["transactions:write"])
+@router.put("/transactions/", response_model=List[Transaction])
+async def create_new_transactions(
+        transactions: List[Transaction] = Security(put_transactions, scopes=["transactions:write"])
 ):
-    return created_transactions
+    append_transactions(transactions)
+    return transactions

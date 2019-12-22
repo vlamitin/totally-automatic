@@ -15,7 +15,7 @@ env/
 .ipynb_checkpoints
 
 # sensible data
-*.token.pickle
+*token.pickle
 *_db.json
 *config.ini
 *credentials.json
