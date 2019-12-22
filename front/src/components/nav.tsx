@@ -20,7 +20,14 @@ export const Nav: React.FC<{}> = observer(() => {
                 </li>
                 <li>
                     { loginStore.isAuthenticated ? (
-                        <Link to={Routes.LOGIN} onClick={() => loginStore.setToken('')}>Logout</Link>
+                        <Link
+                            to={Routes.LOGIN}
+                            onClick={() => {
+                                loginStore.setToken('')
+                            }}
+                        >
+                            { 'Logout' + (loginStore.username && ` (${loginStore.username})`) }
+                        </Link>
                     ) : (
                         <Link to={Routes.LOGIN}>Login</Link>
                     )}

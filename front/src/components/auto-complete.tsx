@@ -53,12 +53,6 @@ export class AutoComplete extends React.Component<AutoCompleteProps, AutoComplet
         suggestions: []
     }
 
-    onChange = (event, { newValue }) => {
-        this.setState({
-            value: newValue
-        })
-    }
-
     // Autosuggest will call this function every time you need to update suggestions.
     // You already implemented this logic above, so just use it.
     onSuggestionsFetchRequested = ({ value }) => {
@@ -89,8 +83,9 @@ export class AutoComplete extends React.Component<AutoCompleteProps, AutoComplet
                     onSuggestionsFetchRequested={this.onSuggestionsFetchRequested}
                     onSuggestionsClearRequested={this.onSuggestionsClearRequested}
                     onSuggestionSelected={(event, data) => {
-                        console.log('data.suggestionValue', data.suggestionValue)
-                        console.log('value', value)
+                        this.setState({
+                            value: data.suggestionValue
+                        })
                         this.props.onSuggestionSelect(data.suggestionValue)
                     }}
                     getSuggestionValue={getSuggestionValue}
@@ -98,8 +93,11 @@ export class AutoComplete extends React.Component<AutoCompleteProps, AutoComplet
                     inputProps={{
                         placeholder: 'Категория',
                         value,
-                        onChange: this.onChange,
+                        onChange: (event, { newValue }) => this.setState({
+                            value: newValue
+                        }),
                         onBlur: (event, { highlightedSuggestion }) => {
+                            if (!highlightedSuggestion) return
                             this.props.onSuggestionSelect(highlightedSuggestion)
                         }
                     }}

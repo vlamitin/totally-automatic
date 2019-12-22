@@ -12,6 +12,7 @@ interface LoginForm {
 }
 
 enum Scope {
+    ME='me',
     READ_TRANSACTIONS='transactions:read',
     WRITE_TRANSACTIONS='transactions:write',
 }
@@ -172,7 +173,7 @@ function validateForm(form: LoginForm): ValidationResult {
 
 const encodeFormData = (form: LoginForm): string => {
     const data = {
-        ['grant_type']: 'password',
+        grant_type: 'password',
         ...form
     }
 

@@ -67,6 +67,10 @@ export const AddTransactionForm: React.FC<AddTransactionFormProps> = props => {
                     type="text"
                     value={form.sum}
                     onChange={e => {
+                        if (isNaN(Number(e.target.value))) {
+                            return
+                        }
+
                         changeForm({
                             ...form,
                             sum: Number(e.target.value)
