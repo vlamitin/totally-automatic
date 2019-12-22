@@ -8,7 +8,7 @@ import { useHistory, useLocation } from 'react-router-dom'
 interface LoginForm {
     username: string
     password: string
-    scopes: Scope[]
+    scope: Scope[]
 }
 
 enum Scope {
@@ -20,7 +20,7 @@ export const Login: React.FC<{}> = observer(() => {
     const [form, changeForm] = React.useState({
         username: '',
         password: '',
-        scopes: Object.keys(Scope).map(key => Scope[key])
+        scope: Object.keys(Scope).map(key => Scope[key])
     })
 
     const { loginStore } = useStores()
@@ -81,8 +81,8 @@ export const Login: React.FC<{}> = observer(() => {
             </div>
             <div style={{ marginBottom: 16 }}>
                 <p>Scopes</p>
-                { Object.keys(Scope).map(key => Scope[key]).map(scope => {
-                    let id: string = scope + '_checkbox'
+                { Object.keys(Scope).map(key => Scope[key]).map(scopeItem => {
+                    let id: string = scopeItem + '_checkbox'
                     return (
                         <div
                             style={{ marginBottom: 16 }}
@@ -91,23 +91,23 @@ export const Login: React.FC<{}> = observer(() => {
                             <input
                                 id={id}
                                 type="checkbox"
-                                checked={form.scopes.includes(scope)}
+                                checked={form.scope.includes(scopeItem)}
                                 onChange={e => {
-                                    let newScopes = form.scopes
+                                    let newScopes = form.scope
 
                                     if (e.target.checked) {
-                                        newScopes = newScopes.concat(scope)
+                                        newScopes = newScopes.concat(scopeItem)
                                     } else {
-                                        newScopes = newScopes.filter(s => s !== scope)
+                                        newScopes = newScopes.filter(s => s !== scopeItem)
                                     }
 
                                     changeForm({
                                         ...form,
-                                        scopes: newScopes
+                                        scope: newScopes
                                     })
                                 }}
                             />
-                            <label htmlFor={id}>{ scope }</label>
+                            <label htmlFor={id}>{ scopeItem }</label>
                         </div>
                     )
                 }) }
@@ -159,22 +159,27 @@ async function submit(form: LoginForm): Promise<LoginResult | AxiosError> {
 interface ValidationResult {
     username: boolean
     password: boolean
-    scopes: boolean
+    scope: boolean
 }
 
 function validateForm(form: LoginForm): ValidationResult {
     return {
         username: Boolean(form.username),
         password: Boolean(form.password),
-        scopes: form.scopes.length > 0
+        scope: form.scope.length > 0
     }
 }
 
-const encodeFormData = (data: LoginForm): string => {
+const encodeFormData = (form: LoginForm): string => {
+    const data = {
+        ['grant_type']: 'password',
+        ...form
+    }
+
     return Object.keys(data)
         .map(key => {
-            if (key === 'scopes') {
-                return data[key].join(',')
+            if (key === 'scope') {
+                return encodeURIComponent(key) + '=' + data[key].map(encodeURIComponent).join('+')
             }
 
             return encodeURIComponent(key) + '=' + encodeURIComponent(data[key])

@@ -77,14 +77,6 @@ export class AutoComplete extends React.Component<AutoCompleteProps, AutoComplet
     render() {
         const { value, suggestions } = this.state
 
-        // Autosuggest will pass through all these props to the input.
-        const inputProps = {
-            placeholder: 'Категория',
-            value,
-            onChange: this.onChange
-        }
-
-        // Finally, render it!
         return (
             <div onFocus={() => {
                 if (!value) {
@@ -97,11 +89,20 @@ export class AutoComplete extends React.Component<AutoCompleteProps, AutoComplet
                     onSuggestionsFetchRequested={this.onSuggestionsFetchRequested}
                     onSuggestionsClearRequested={this.onSuggestionsClearRequested}
                     onSuggestionSelected={(event, data) => {
+                        console.log('data.suggestionValue', data.suggestionValue)
+                        console.log('value', value)
                         this.props.onSuggestionSelect(data.suggestionValue)
                     }}
                     getSuggestionValue={getSuggestionValue}
                     renderSuggestion={renderSuggestion}
-                    inputProps={inputProps}
+                    inputProps={{
+                        placeholder: 'Категория',
+                        value,
+                        onChange: this.onChange,
+                        onBlur: (event, { highlightedSuggestion }) => {
+                            this.props.onSuggestionSelect(highlightedSuggestion)
+                        }
+                    }}
                 />
             </div>
         )

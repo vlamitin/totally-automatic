@@ -1,5 +1,5 @@
 import React from 'react'
-import { BrowserRouter as Router, Link, Redirect, Route, RouteProps, Switch } from 'react-router-dom'
+import { BrowserRouter as Router, Redirect, Route, RouteProps, Switch } from 'react-router-dom'
 import { AddTransactions } from './pages/add-transactions/add-transactions'
 import { Page } from './pages/page'
 import { Login } from './pages/login/login'
@@ -9,6 +9,8 @@ import { Nav } from './components/nav'
 
 import './app.css'
 import { Routes } from './routes'
+
+document.title = window.location.host
 
 export const App: React.FC = () => {
     return (

@@ -3,9 +3,11 @@ import { AddTransactionForm, Transaction } from './add-transaction-form'
 import { AddedTransactionsList } from './added-transactions-list'
 
 import './add-transactions.css'
+import { useStores } from '../../shared-state/contexts'
 
 export const AddTransactions: React.FC = () => {
     const [transactions, changeTransactions] = React.useState([])
+    const { loginStore } = useStores()
 
     // fetchTransactions()
 
@@ -32,7 +34,7 @@ export const AddTransactions: React.FC = () => {
                 />
 
                 <div style={{ marginTop: 16 }}>
-                    <button onClick={() => sendTransactions(transactions)}>
+                    <button onClick={() => sendTransactions(transactions, loginStore.token)}>
                         send to spreadsheets (TODO)
                     </button>
                 </div>
@@ -53,15 +55,13 @@ async function fetchTransactions(): Promise<Transaction[]> {
 }
 
 
-async function sendTransactions(transactions: Transaction[]): Promise<void> {
+async function sendTransactions(transactions: Transaction[], token: string): Promise<void> {
     let response = await fetch('http://localhost:8000/transactions', {
         method: 'PUT',
         headers: {
-            'Content-Type': 'application/jsoncharset=utf-8'
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
         },
-        body: JSON.stringify({
-            transactions
-        }),
-        mode: 'no-cors'
+        body: JSON.stringify(transactions)
     })
 }
