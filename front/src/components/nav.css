@@ -11,3 +11,7 @@
 .second-last-item {
     flex: 1;
 }
+
+li.active {
+    text-decoration: underline;
+}
