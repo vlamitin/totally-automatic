@@ -23,7 +23,7 @@ export class LoginStore {
     fetchUsername = async () => {
         const user: User =  await UserService.instance.getMe(this.token)
 
-        if (user.username) {
+        if (user && user.username) {
             this.setUsername(user.username)
         }
     }

@@ -2,17 +2,24 @@ import React from 'react'
 import { LoginStore } from './login-store'
 import { TransactionsStore } from './transactions-store'
 
-const createStores = () => ({
-    loginStore: new LoginStore(),
-    transactionsStore: new TransactionsStore(),
-})
+export class StoresRepository {
+    static instance: StoresRepository
 
-let storesContext: React.Context<any>
+    constructor(
+        public loginStore: LoginStore,
+        public transactionsStore: TransactionsStore
+    ) {}
+}
+
+let storesContext: React.Context<StoresRepository>
 
 export function initStores(): void {
-    storesContext = React.createContext(createStores())
+    StoresRepository.instance = new StoresRepository(
+        new LoginStore(),
+        new TransactionsStore()
+    )
+    storesContext = React.createContext(StoresRepository.instance)
+    window['storesRepository'] = StoresRepository.instance
 }
 
 export const useStores = () => React.useContext(storesContext)
-
-window['storesContext'] = storesContext
