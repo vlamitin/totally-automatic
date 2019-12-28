@@ -8,7 +8,7 @@ import './add-transactions.css'
 
 export interface AddTransactionsProps {
     transaction?: Transaction
-    onTransactionAdded?: () => void
+    onTransactionProcessed?: () => void
 }
 
 const defaultTransaction: Transaction = {
@@ -18,22 +18,25 @@ const defaultTransaction: Transaction = {
     comment: ''
 }
 
-export const AddTransactions: React.FC<AddTransactionsProps> = ({ transaction, onTransactionAdded }) => {
+export const AddTransactions: React.FC<AddTransactionsProps> = ({ transaction, onTransactionProcessed }) => {
     const [transactions, changeTransactions] = React.useState([])
     const { loginStore } = useStores()
-
-    // fetchTransactions()
 
     return (
         <div className="add-transactions">
             <AddTransactionForm
-                key={transactions.length}
+                key={transactions.length + JSON.stringify(transaction || defaultTransaction)}
                 defaultState={transaction || defaultTransaction}
-                onStateChange={newTr => {
-                    changeTransactions([...transactions, newTr])
-                    if (onTransactionAdded) {
-                        onTransactionAdded()
+                onSubmit={newTr => {
+                    if (newTr) {
+                        changeTransactions([...transactions, newTr])
                     }
+                    if (onTransactionProcessed) {
+                        onTransactionProcessed()
+                    }
+                }}
+                onClear={() => {
+                    onTransactionProcessed()
                 }}
             />
             <div>

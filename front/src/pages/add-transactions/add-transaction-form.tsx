@@ -29,7 +29,8 @@ export const CATEGORIES = [
 
 export interface AddTransactionFormProps {
     defaultState: Transaction
-    onStateChange: (newState: Transaction) => void
+    onSubmit: (newState: Transaction) => void
+    onClear?: () => void
 }
 
 export const AddTransactionForm: React.FC<AddTransactionFormProps> = props => {
@@ -43,7 +44,7 @@ export const AddTransactionForm: React.FC<AddTransactionFormProps> = props => {
             onKeyDown={event => {
                 if (event.ctrlKey && event.keyCode === 13) {
                     if (!isValid) return
-                    props.onStateChange(form)
+                    props.onSubmit(form)
                 }
             }}
         >
@@ -100,14 +101,25 @@ export const AddTransactionForm: React.FC<AddTransactionFormProps> = props => {
                 />
                 <label htmlFor="tr-comment">Комментарий</label>
             </div>
-            <div>
+            <div style={{
+                display: 'flex',
+                justifyContent: 'space-between'
+            }}>
                 <button
                     disabled={!isValid}
                     onClick={() => {
-                        props.onStateChange(form)
+                        props.onSubmit(form)
                     }}
                 >
                     submit
+                </button>
+                <button
+                    onClick={() => {
+                        changeForm(props.defaultState)
+                        props.onClear && props.onClear()
+                    }}
+                >
+                    clear
                 </button>
             </div>
         </div>
