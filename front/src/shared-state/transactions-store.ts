@@ -1,11 +1,5 @@
 import { action, observable } from 'mobx'
-
-export interface Transaction {
-    date: Date
-    sum: number
-    category: string
-    comment?: string
-}
+import { Transaction } from '../protocol/transactions-service'
 
 export class TransactionsStore {
     @observable

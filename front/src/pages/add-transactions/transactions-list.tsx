@@ -1,7 +1,7 @@
 import React from 'react'
+import { Transaction } from '../../protocol/transactions-service'
 
 import './added-transactions-list.css'
-import { Transaction } from '../../shared-state/transactions-store'
 
 interface TransactionsListProps {
     transactions: Transaction[]

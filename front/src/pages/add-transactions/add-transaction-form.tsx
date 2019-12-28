@@ -1,7 +1,7 @@
 import React from 'react'
 import { DayPicker } from '../../components/day-picker'
 import { AutoComplete } from '../../components/auto-complete'
-import { Transaction } from '../../shared-state/transactions-store'
+import { Transaction } from '../../protocol/transactions-service'
 
 export const CATEGORIES = [
     'Еда работа',

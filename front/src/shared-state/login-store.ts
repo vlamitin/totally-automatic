@@ -1,4 +1,5 @@
 import { action, autorun, computed, observable } from 'mobx'
+import { User, UserService } from '../protocol/user-service'
 
 export class LoginStore {
     @observable
@@ -20,18 +21,10 @@ export class LoginStore {
     }
 
     fetchUsername = async () => {
-        const response = await fetch('http://localhost:8000/users/me', {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${this.token}`
-            }
-        })
+        const user: User =  await UserService.instance.getMe(this.token)
 
-        const jsoned = await response.json()
-
-        if (jsoned.username) {
-            this.setUsername(jsoned.username)
+        if (user.username) {
+            this.setUsername(user.username)
         }
     }
 

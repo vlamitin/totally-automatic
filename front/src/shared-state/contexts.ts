@@ -7,7 +7,11 @@ const createStores = () => ({
     transactionsStore: new TransactionsStore(),
 })
 
-const storesContext = React.createContext(createStores())
+let storesContext: React.Context<any>
+
+export function initStores(): void {
+    storesContext = React.createContext(createStores())
+}
 
 export const useStores = () => React.useContext(storesContext)
 

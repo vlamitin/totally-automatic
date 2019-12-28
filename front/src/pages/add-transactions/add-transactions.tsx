@@ -1,10 +1,10 @@
 import React from 'react'
 import { AddTransactionForm } from './add-transaction-form'
 import { TransactionsList } from './transactions-list'
+import { useStores } from '../../shared-state/contexts'
+import { Transaction, TransactionsService } from '../../protocol/transactions-service'
 
 import './add-transactions.css'
-import { useStores } from '../../shared-state/contexts'
-import { Transaction } from '../../shared-state/transactions-store'
 
 export interface AddTransactionsProps {
     transaction?: Transaction
@@ -46,7 +46,7 @@ export const AddTransactions: React.FC<AddTransactionsProps> = ({ transaction, o
 
                 <div style={{ marginTop: 16 }}>
                     <button onClick={async () => {
-                        await sendTransactions(transactions, loginStore.token)
+                        await TransactionsService.instance.sendTransactions(transactions, loginStore.token)
                         changeTransactions([])
                     }}>
                         send to spreadsheets (TODO)
@@ -55,27 +55,4 @@ export const AddTransactions: React.FC<AddTransactionsProps> = ({ transaction, o
             </div>
         </div>
     )
-}
-
-async function fetchTransactions(): Promise<Transaction[]> {
-    let response = await fetch('http://localhost:8000/transactions', {
-        method: 'GET',
-        mode: 'no-cors'
-    })
-
-    console.log(response)
-
-    return []
-}
-
-
-async function sendTransactions(transactions: Transaction[], token: string): Promise<void> {
-    let response = await fetch('http://localhost:8000/transactions', {
-        method: 'PUT',
-        headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${token}`
-        },
-        body: JSON.stringify(transactions)
-    })
 }

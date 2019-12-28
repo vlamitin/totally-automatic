@@ -6,12 +6,10 @@ import { Login } from './pages/login/login'
 import { observer } from 'mobx-react'
 import { useStores } from './shared-state/contexts'
 import { Nav } from './components/nav'
-
-import './app.css'
 import { Routes } from './routes'
 import { ProcessTransactions } from './pages/process-transactions/process-transactions'
 
-document.title = window.location.host
+import './app.css'
 
 export const App: React.FC = () => {
     return (
