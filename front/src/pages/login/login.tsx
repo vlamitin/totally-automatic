@@ -1,21 +1,10 @@
 import React from 'react'
-import axios, { AxiosError } from 'axios'
 import { get } from 'lodash'
 import { useStores } from '../../shared-state/contexts'
 import { observer } from 'mobx-react'
 import { useHistory, useLocation } from 'react-router-dom'
-
-interface LoginForm {
-    username: string
-    password: string
-    scope: Scope[]
-}
-
-enum Scope {
-    ME='me',
-    READ_TRANSACTIONS='transactions:read',
-    WRITE_TRANSACTIONS='transactions:write',
-}
+import { LoginForm, Scope, UserService } from '../../protocol/user-service'
+import { AxiosError } from 'axios'
 
 export const Login: React.FC<{}> = observer(() => {
     const [form, changeForm] = React.useState({
@@ -34,11 +23,16 @@ export const Login: React.FC<{}> = observer(() => {
 
     const handleSubmit = async () => {
         if (!isValid) return
-        const result = await submit(form)
-        if ('isAxiosError' in result) {
-            const message = get(result, 'response.data.detail') || result.message
-            alert(message)
-        } else {
+        const result = await UserService.instance.login(form, {
+            errorMiddlewares: [
+                (error: AxiosError) => {
+                    const message = get(error, 'response.data.detail') || error.message
+                    alert(message)
+                }
+            ]
+        })
+
+        if (result) {
             loginStore.setToken(result.access_token)
             history.replace(from)
         }
@@ -125,38 +119,6 @@ export const Login: React.FC<{}> = observer(() => {
     )
 })
 
-interface LoginResult {
-    access_token: string
-    token_type: string
-}
-
-async function submit(form: LoginForm): Promise<LoginResult | AxiosError> {
-    try {
-        let response = await axios.request({
-            url: 'http://localhost:8000/login',
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8'
-            },
-            data: encodeFormData(form),
-        })
-
-        console.log(response)
-        return response.data
-    } catch (e) {
-        console.error(e)
-        if ('toJSON' in e) {
-            console.log(e.toJSON())
-        }
-
-        if (e.isAxiosError) {
-            return e
-        }
-
-        alert(e)
-    }
-}
-
 interface ValidationResult {
     username: boolean
     password: boolean
@@ -169,21 +131,4 @@ function validateForm(form: LoginForm): ValidationResult {
         password: Boolean(form.password),
         scope: form.scope.length > 0
     }
-}
-
-const encodeFormData = (form: LoginForm): string => {
-    const data = {
-        grant_type: 'password',
-        ...form
-    }
-
-    return Object.keys(data)
-        .map(key => {
-            if (key === 'scope') {
-                return encodeURIComponent(key) + '=' + data[key].map(encodeURIComponent).join('+')
-            }
-
-            return encodeURIComponent(key) + '=' + encodeURIComponent(data[key])
-        })
-        .join('&');
 }

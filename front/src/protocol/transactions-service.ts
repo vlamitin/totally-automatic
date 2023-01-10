@@ -1,4 +1,4 @@
-import { BaseHttpService, GET, PUT } from './base-http-service'
+import { BaseHttpService, GET, MethodMiddlewares, PUT } from './base-http-service'
 import { getService, service } from './services'
 
 export interface Transaction {
@@ -16,7 +16,7 @@ export class TransactionsService extends BaseHttpService {
         return getService<TransactionsService>(TransactionsService.serviceName)
     }
 
-    sendTransactions = (transactions: Transaction[], token: string): Promise<Transaction[]> => {
+    sendTransactions = (transactions: Transaction[], token: string, methodMiddlewares: MethodMiddlewares = {}) => {
         return super.send<Transaction[]>({
             url: '/transactions',
             method: PUT,
@@ -25,6 +25,6 @@ export class TransactionsService extends BaseHttpService {
                 'Authorization': `Bearer ${token}`
             },
             data: transactions
-        })
+        }, methodMiddlewares)
     }
 }

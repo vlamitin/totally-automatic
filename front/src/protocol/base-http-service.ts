@@ -9,6 +9,18 @@ export type ServiceRequestMiddleware = (config: AxiosRequestConfig) => void
 export type ServiceResponseMiddleware = (response: AxiosResponse) => void
 export type ServiceErrorMiddleware = (error: AxiosError) => void
 
+export interface MethodMiddlewares {
+    requestMiddlewares?: ServiceRequestMiddleware[]
+    responseMiddlewares?: ServiceResponseMiddleware[]
+    errorMiddlewares?: ServiceErrorMiddleware[]
+}
+
+const defaultMethodMiddlewares: MethodMiddlewares = {
+    requestMiddlewares: [],
+    responseMiddlewares: [],
+    errorMiddlewares: []
+}
+
 export abstract class BaseHttpService {
     static serviceName: string = 'BaseHttpService'
 
@@ -22,14 +34,21 @@ export abstract class BaseHttpService {
         this.serverUrl = serverUrl
     }
 
-    send<T>(config: AxiosRequestConfig): Promise<T> {
+    send<T>(
+        config: AxiosRequestConfig,
+        methodMiddlewares: MethodMiddlewares = {}
+    ): Promise<T | undefined> {
         if (!this.serverUrl) {
             throw new Error('No serverUrl is set!')
         }
 
+        const { requestMiddlewares, responseMiddlewares, errorMiddlewares }
+            = { ...defaultMethodMiddlewares, ...methodMiddlewares }
+
         let requestStart: number = Date.now()
 
         BaseHttpService.commonRequestMiddlewares.forEach(middleware => middleware(config))
+        requestMiddlewares.forEach(middleware => middleware(config))
 
         return axios.request({
             baseURL: this.serverUrl,
@@ -45,6 +64,7 @@ export abstract class BaseHttpService {
                 })
 
                 BaseHttpService.commonResponseMiddlewares.forEach(middleware => middleware(response))
+                responseMiddlewares.forEach(middleware => middleware(response))
 
                 return response.data
             })
@@ -58,6 +78,7 @@ export abstract class BaseHttpService {
                 })
 
                 BaseHttpService.commonErrorMiddlewares.forEach(middleware => middleware(error))
+                errorMiddlewares.forEach(middleware => middleware(error))
             })
     }
 }

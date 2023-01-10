@@ -6,9 +6,9 @@ from pydantic import BaseModel
 class User(BaseModel):
     username: str
     allowed_scopes: List[str]
+    disabled: bool
     email: str = None
     full_name: str = None
-    disabled: bool = None
 
 
 class UserInDB(User):
